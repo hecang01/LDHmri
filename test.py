@@ -2,7 +2,7 @@ import os
 import tensorflow as tf
 
 # 加载模型
-model = tf.keras.models.load_model('D:\\DATA1\\train\\model1.h5')
+model = tf.keras.models.load_model('D:\\DATA1\\train\\MRI\\test.h5')
 
 
 # 加载数据集
