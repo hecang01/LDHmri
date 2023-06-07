@@ -1,7 +1,7 @@
 import os
 
 # 设定文件夹
-main_dir = 'D:\\DATA1\\MRIi'
+main_dir = 'D:\\DATA1\\MRIi\\2'
 
 # 下级目录
 for dirname in os.listdir(main_dir):

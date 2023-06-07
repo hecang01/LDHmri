@@ -7,9 +7,9 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 # 学习率
 learning_rate = 0.001
 # 迭代次数
-num_epochs = 120
+num_epochs = 30
 # 批大小
-batch_size = 128
+batch_size = 64
 
 
 # 加载数据集
@@ -63,13 +63,13 @@ model = tf.keras.Sequential([
 
 # 创建数据增强器
 datagen = ImageDataGenerator(
-    rotation_range=10,  # 随机旋转角度范围
-    width_shift_range=0.1,  # 随机水平平移范围
-    height_shift_range=0.1,  # 随机垂直平移范围
+    rotation_range=20,  # 随机旋转角度范围20°
+    width_shift_range=0.1,  # 随机水平平移范围10%
+    height_shift_range=(0, 0.1),  # 随机垂直平移范围向上10%
     shear_range=0.2,  # 随机剪切强度
-    zoom_range=0.2,  # 随机缩放范围
+    zoom_range=(0.8, 1.05),  # 随机缩放范围80-105%
     horizontal_flip=True,  # 水平翻转
-    vertical_flip=True  # 垂直翻转
+    vertical_flip=False  # 垂直翻转
 )
 
 # 创建用于增强阳性样本的数据生成器
@@ -91,9 +91,9 @@ positive_generator = datagen.flow(
 )
 
 # 设置阴性样本和阳性样本的权重
-# weight_neg = 1.0  # 阴性样本的权重
-# weight_pos = 1.0  # 阳性样本的权重
-# class_weights = {0: weight_neg, 1: weight_pos}
+weight_neg = 1.0  # 阴性样本的权重
+weight_pos = 3.0  # 阳性样本的权重
+class_weights = {0: weight_neg, 1: weight_pos}
 
 # 编译模型
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate),
@@ -107,9 +107,6 @@ model.fit(
     steps_per_epoch=len(train_images) // batch_size,
     validation_data=(val_images, val_labels)
 )
-
-# 训练模型
-# history = model.fit(train_dataset, epochs=num_epochs, validation_data=val_dataset)
 
 # 评估模型
 loss, acc = model.evaluate(test_dataset)
